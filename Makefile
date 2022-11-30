@@ -15,17 +15,17 @@ region_prefix=$(shell rp='$(region_prefix_)'; echo $${rp[@]:0:3}$${rp[@]:1,-1})
 
 ## verify a correct DEPLOY var was given
 ifeq "$(DEPLOY)" "production"
-	s3_bucket="loa-prod-$(region_prefix)-tf-terraform-states"
-	dynamodb_table="loa-prod-tf-remote"
+	s3_bucket="prod-$(region_prefix)-tf-terraform-states"
+	dynamodb_table="prod-tf-remote"
 else ifeq "$(DEPLOY)" "demo"
-	s3_bucket="loa-demo-$(region_prefix)-tf-terraform-states"
-	dynamodb_table="loa-demo-$(region_prefix)-tf-remote"
+	s3_bucket="demo-$(region_prefix)-tf-terraform-states"
+	dynamodb_table="demo-$(region_prefix)-tf-remote"
 else ifeq "$(DEPLOY)" "staging"
-	s3_bucket="loa-staging-$(region_prefix)-tf-terraform-states"
-	dynamodb_table="loa-staging-$(region_prefix)-tf-remote"
+	s3_bucket="staging-$(region_prefix)-tf-terraform-states"
+	dynamodb_table="staging-$(region_prefix)-tf-remote"
 else ifeq "$(DEPLOY)" "develop"
-	s3_bucket="loa-develop-$(region_prefix)-tf-terraform-states"
-	dynamodb_table="loa-develop-$(region_prefix)-tf-remote"
+	s3_bucket="develop-$(region_prefix)-tf-terraform-states"
+	dynamodb_table="develop-$(region_prefix)-tf-remote"
 else
 $(error invalid DEPLOY variable: $(DEPLOY))
 endif
