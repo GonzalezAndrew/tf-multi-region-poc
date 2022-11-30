@@ -18,36 +18,33 @@ Example:
 
 ```
 .
-├── deploy/
-│   ├── globals/
-│   │   └── inputs.tfvars
-│   ├── production/
-│   │   ├── globals/
-│   │   │   └── inputs.tfvars
-│   │   ├── us-east-1/
-│   │   │   └── inputs.tfvars
-│   │   └── eu-west-1/
-│   │       └── inputs.tfvars
-│   ├── staging/
-│   │   ├── globals/
-│   │   │   └── inputs.tfvars
-│   │   └── us-east-1/
-│   │       └── inputs.tfvars
-│   └── demo/
-│       ├── globals/
-│       │   └── inputs.tfvars
-│       ├── us-east-1/
-│       │   └── inputs.tfvars
-│       └── eu-west-1/
-│           └── inputs.tfvars
-├── .pre-commit-config.yaml
-├── .gitignore
-├── main.tf
-├── variables.tf
-├── versions.tf
-├── outputs.tf
+├── Makefile
 ├── README.md
-└── Makefile
+├── deploy
+│   ├── demo
+│   │   ├── eu-west-1.tfvars
+│   │   ├── globals.tfvars
+│   │   ├── us-east-1.tfvars
+│   │   └── us-west-2.tfvars
+│   ├── develop
+│   │   ├── eu-west-1.tfvars
+│   │   ├── globals.tfvars
+│   │   └── us-east-1.tfvars
+│   ├── globals
+│   │   └── inputs.tfvars
+│   ├── production
+│   │   ├── eu-west-1.tfvars
+│   │   ├── globals.tfvars
+│   │   ├── us-east-1.tfvars
+│   │   └── us-west-2.tfvars
+│   └── staging
+│       ├── globals.tfvars
+│       └── us-east-1.tfvars
+├── main.tf
+├── outputs.tf
+├── variables.tf
+└── versions.tf
+
 ```
 
 The repository structure above demonstrates how someone could use input variable files to deploy cloud resources to a specific account and region. The Makefile is included to easily deploy by just setting the `DEPLOY` and `AWS_REGION` environment variable. The `DEPLOY` environment variable represents the account (or environment) you will be deploying to. You can think of this as production, staging, demo, etc. The `AWS_REGION` will of course represent the region you will be deploying cloud resources to and the input variable files to be used during a `terraform plan` and/or `terraform apply`. The `deploy/globals` directory will be used to store global input variables used across all environments and regions.
