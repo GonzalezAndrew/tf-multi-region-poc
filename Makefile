@@ -9,23 +9,19 @@ endif
 region=${AWS_REGION}
 key="tf-multi-region-poc"
 
-## we need to formulate the region prefix i.e us-east-1 => use1, eu-west-1 => euw1
-region_prefix_=$(shell r='$(region)'; echo $${r//-})
-region_prefix=$(shell rp='$(region_prefix_)'; echo $${rp[@]:0:3}$${rp[@]:1,-1})
-
 ## verify a correct DEPLOY var was given
 ifeq "$(DEPLOY)" "production"
-	s3_bucket="prod-$(region_prefix)-tf-terraform-states"
-	dynamodb_table="prod-tf-remote"
+	s3_bucket="prod-tf-states"
+	dynamodb_table="prod-tf-lock"
 else ifeq "$(DEPLOY)" "demo"
-	s3_bucket="demo-$(region_prefix)-tf-terraform-states"
-	dynamodb_table="demo-$(region_prefix)-tf-remote"
+	s3_bucket="demo-tf-states"
+	dynamodb_table="demo-tf-lock"
 else ifeq "$(DEPLOY)" "staging"
-	s3_bucket="staging-$(region_prefix)-tf-terraform-states"
-	dynamodb_table="staging-$(region_prefix)-tf-remote"
+	s3_bucket="staging-tf-states"
+	dynamodb_table="staging-tf-lock"
 else ifeq "$(DEPLOY)" "develop"
-	s3_bucket="develop-$(region_prefix)-tf-terraform-states"
-	dynamodb_table="develop-$(region_prefix)-tf-remote"
+	s3_bucket="develop-tf-states"
+	dynamodb_table="develop-tf-lock"
 else
 $(error invalid DEPLOY variable: $(DEPLOY))
 endif
@@ -42,7 +38,7 @@ init: ## Initializes the terraform remote state backend and pulls the correct de
         -backend-config="bucket=${s3_bucket}" \
         -backend-config="key=${key}/terraform.tfstate" \
         -backend-config="dynamodb_table=${dynamodb_table}" \
-        -backend-config="region=${region}"
+        -backend-config="region=us-east-1"
 
 update: ## Gets any module updates
 	@terraform get -update=true &>/dev/null
